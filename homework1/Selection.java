@@ -11,4 +11,16 @@ public class Selection extends SortAlgorithm {
             exchange(objs, i, min_element);
         }
     }
+    public static void main(String[] args){
+        Comparable[] objs = GenerateData. getRandomData(20);
+        Selection selection = new Selection();
+        selection.show(objs);
+        selection.sort(objs);
+        selection.show(objs);
+        selection.isSorted(objs);
+        if(selection.isSorted(objs))
+            System.out.println("Selection sort is sorted");
+        else
+            System.out.println("Selection sort is not sorted");
+    }
 }
