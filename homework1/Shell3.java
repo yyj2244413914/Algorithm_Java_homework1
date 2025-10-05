@@ -1,14 +1,14 @@
 package homework1;
 
-public class Shell1 extends SortAlgorithm {
+public class Shell3 extends SortAlgorithm {
     public void sort(Comparable[] objs) {
         int N = objs.length;
         if (N <= 1) return; // 处理空数组或只有一个元素的情况
         
         // 初始化间隔h为最大的递减序列对应间隔，且h < N
         int h = 1;
-        while (h * 2 < N) {
-            h *= 2;
+        while (3 * h + 1 < N) {
+            h = 3 * h + 1;
         }
         
         // 按照间隔h进行排序，逐步减小h至1
@@ -20,20 +20,20 @@ public class Shell1 extends SortAlgorithm {
                     exchange(objs, j, j - h);
                 }
             }
-            // 间隔减半（从h变为h/2）
-            h /= 2;
+            // 间隔减半（从h变为h/3）
+            h /= 3;
         }
     }
     public static void main(String[] args) {
-                Comparable[] objs = GenerateData. getRandomData(20);
-        Shell1 shell1 = new Shell1();
-        shell1.show(objs);
-        shell1.sort(objs);
-        shell1.show(objs);
-        shell1.isSorted(objs);
-        if(shell1.isSorted(objs))
-            System.out.println("Shell1 sort is sorted");
+        Comparable[] objs = GenerateData. getRandomData(20);
+        Shell3 shell3 = new Shell3();
+        shell3.show(objs);
+        shell3.sort(objs);
+        shell3.show(objs);
+        shell3.isSorted(objs);
+        if(shell3.isSorted(objs))
+            System.out.println("Shell3 sort is sorted");
         else
-            System.out.println("Shell1 sort is not sorted");
+            System.out.println("Shell3 sort is not sorted");
     }
 }
