@@ -18,13 +18,27 @@ public class SortTest {
     // 执行样例，仅供参考。
     // 由于测试数据的规模大小，算法性能，机器性能等因素，请同学们耐心等待每次程序的运行。
     public static void main(String[] args) {
-        int[] dataLength = {100, 1000};
+        int[] dataLength = new int[9];
+        dataLength[0] = 256;
+        for(int i = 1; i < dataLength.length; i++)
+            dataLength[i] = dataLength[i-1] * 2;
         double[] elapsedTime = new double[dataLength.length];
-        SortAlgorithm alg = new Insertion();
-        for(int i = 0; i < dataLength.length; i++)
-            elapsedTime[i] = test(alg, GenerateData.getRandomData(dataLength[i]), 5);
-        for(double time: elapsedTime)
-            System.out.printf("%6.4f ", time);
+        SortAlgorithm []alg = new SortAlgorithm[7];
+        alg[0] = new Insertion();
+        alg[1] = new Selection();
+        alg[2] = new Bubble();
+        alg[3] = new Quick();
+        alg[4] = new Shell1();
+        alg[5] = new Shell2();
+        alg[6] = new Shell3();
+        for(int i = 0; i < alg.length; i++){
+            System.out.println(alg[i].toString() + ":");
+            for(int j = 0; j < dataLength.length; j++){
+                elapsedTime[j] = test(alg[i], GenerateData.getRandomData(dataLength[j]), 5);
+                System.out.println(  " "  + elapsedTime[j]);
+            }
+            System.out.println();
+        }
         System.out.println();
     }
 }
