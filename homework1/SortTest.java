@@ -31,14 +31,29 @@ public class SortTest {
         alg[4] = new Shell1();
         alg[5] = new Shell2();
         alg[6] = new Shell3();
+        System.out.println("数据规模为2^8-2^16:");
         for(int i = 0; i < alg.length; i++){
             System.out.println(alg[i].toString() + ":");
             for(int j = 0; j < dataLength.length; j++){
                 elapsedTime[j] = test(alg[i], GenerateData.getRandomData(dataLength[j]), 5);
-                System.out.println(  " "  + elapsedTime[j]);
+                System.out.println( dataLength[j] + " "  + elapsedTime[j]);
             }
             System.out.println();
         }
-        System.out.println();
+        System.out.println("__________________________________________________________");
+        System.out.println("数据规模为2^17-2^25:");
+        dataLength[0] = 131072;
+        for(int i = 1; i < dataLength.length; i++)
+            dataLength[i] = dataLength[i-1] * 2;
+        for(int i = 3; i < alg.length; i++){
+            System.out.println(alg[i].toString() + ":");
+            for(int j = 0; j < dataLength.length; j++){
+                elapsedTime[j] = test(alg[i], GenerateData.getRandomData(dataLength[j]), 5);
+                System.out.println( dataLength[j] + " "  + elapsedTime[j]);
+            }
+            System.out.println();
+        }
+        System.out.println("__________________________________________________________");
+
     }
 }
