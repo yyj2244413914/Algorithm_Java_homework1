@@ -1,59 +1,62 @@
 package homework1;
+
 public class SortTest {
-    // 使用指定的排序算法完成一次排序所需要的时间，单位是纳秒
-    public static double time(SortAlgorithm alg, Double[] numbers){
+    // 对单组数据进行一次排序（使用副本，不修改原始数据）
+    public static double time(SortAlgorithm alg, Double[] originalNumbers) {
+        Double[] numbers = originalNumbers.clone();  // 克隆数组，避免影响原始数据
         double start = System.nanoTime();
         alg.sort(numbers);
         double end = System.nanoTime();
         return end - start;
     }
-    // 为了避免一次测试数据所造成的不公平，对一个实验完成T次测试，获得T次测试之后的平均时间
-    public static double test(SortAlgorithm alg, Double[] numbers, int T)
-    {
-        double totalTime = 0;
-        for(int i = 0; i < T; i++)
-            totalTime += time(alg, numbers);
-        return totalTime/T;
-    }
-    // 执行样例，仅供参考。
-    // 由于测试数据的规模大小，算法性能，机器性能等因素，请同学们耐心等待每次程序的运行。
-    public static void main(String[] args) {
-        int[] dataLength = new int[9];
-        dataLength[0] = 256;
-        for(int i = 1; i < dataLength.length; i++)
-            dataLength[i] = dataLength[i-1] * 2;
-        double[] elapsedTime = new double[dataLength.length];
-        SortAlgorithm []alg = new SortAlgorithm[7];
-        alg[0] = new Insertion();
-        alg[1] = new Selection();
-        alg[2] = new Bubble();
-        alg[3] = new Quick();
-        alg[4] = new Shell1();
-        alg[5] = new Shell2();
-        alg[6] = new Shell3();
-        System.out.println("数据规模为2^8-2^16:");
-        for(int i = 0; i < alg.length; i++){
-            System.out.println(alg[i].toString() + ":");
-            for(int j = 0; j < dataLength.length; j++){
-                elapsedTime[j] = test(alg[i], GenerateData.getRandomData(dataLength[j]), 5);
-                System.out.println( dataLength[j] + " "  + elapsedTime[j]);
-            }
-            System.out.println();
-        }
-        System.out.println("__________________________________________________________");
-        System.out.println("数据规模为2^17-2^25:");
-        dataLength[0] = 131072;
-        for(int i = 1; i < dataLength.length; i++)
-            dataLength[i] = dataLength[i-1] * 2;
-        for(int i = 3; i < alg.length; i++){
-            System.out.println(alg[i].toString() + ":");
-            for(int j = 0; j < dataLength.length; j++){
-                elapsedTime[j] = test(alg[i], GenerateData.getRandomData(dataLength[j]), 5);
-                System.out.println( dataLength[j] + " "  + elapsedTime[j]);
-            }
-            System.out.println();
-        }
-        System.out.println("__________________________________________________________");
 
+    // 在多组固定数据上测试：所有算法使用相同的testDataGroups
+    public static double test(SortAlgorithm alg, Double[][] testDataGroups) {
+        double totalTime = 0;
+        // 遍历每组测试数据，累加时间
+        for (Double[] group : testDataGroups) {
+            totalTime += time(alg, group);
+        }
+        return totalTime / testDataGroups.length;  // 返回平均值
+    }
+
+    public static void main(String[] args) {
+        int T = 5;  // 每组数据规模对应5组不同测试数据
+        int[] dataLength = new int[9];
+        dataLength[0] = 256;  // 2^8
+        for (int i = 1; i < dataLength.length; i++) {
+            dataLength[i] = dataLength[i-1] * 2;  // 直到2^16=65536
+        }
+
+        SortAlgorithm[] algorithms = new SortAlgorithm[7];
+        algorithms[0] = new Insertion();
+        algorithms[1] = new Selection();
+        algorithms[2] = new Bubble();
+        algorithms[3] = new Quick();
+        algorithms[4] = new Shell1();
+        algorithms[5] = new Shell2();
+        algorithms[6] = new Shell3();
+
+        System.out.println("数据规模为2^8-2^16，每组规模对应5组固定测试数据：");
+        // 遍历每个数据规模
+        for (int lenIdx = 0; lenIdx < dataLength.length; lenIdx++) {
+            int n = dataLength[lenIdx];
+            System.out.println("----- 数据规模: " + n + " -----");
+
+            // 预生成当前规模的5组测试数据（所有算法共用这5组）
+            Double[][] testDataGroups = new Double[T][n];
+            for (int groupIdx = 0; groupIdx < T; groupIdx++) {
+                testDataGroups[groupIdx] = GenerateData.getRandomData(n);
+            }
+
+            // 每个算法在这5组数据上测试并输出结果
+            for (SortAlgorithm alg : algorithms) {
+                double avgTime = test(alg, testDataGroups);
+                System.out.printf("%-15s 平均耗时: %.2f 纳秒%n", 
+                                 alg.toString(), avgTime);
+            }
+            System.out.println("----------------------------------------");
+        }
     }
 }
+    
