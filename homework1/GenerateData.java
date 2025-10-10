@@ -30,7 +30,7 @@ public class GenerateData {
         return numbers;
     }
     // 将数组numbers中的[left,right)范围内的数据随机打乱
-    private static void shuffle(Double[] numbers, int left, int right){
+    public static void shuffle(Double[] numbers, int left, int right){
         int N = right - left;
         Random rand = new Random();
         for(int i = 0; i < N; i++){

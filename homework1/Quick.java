@@ -50,7 +50,7 @@ public class Quick extends SortAlgorithm {
     /**
      * 找到start、end和中间位置三个数中的中间值的索引
      */
-    private int getMedianIndex(Comparable[] objs, int start, int end) {
+    public int getMedianIndex(Comparable[] objs, int start, int end) {
         int mid = start + (end - start) / 2;
         
         // 比较三个位置的元素，返回中间值的索引
