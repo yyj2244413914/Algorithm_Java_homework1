@@ -1,15 +1,9 @@
 package homework1;
+import java.util.Scanner;
 
-public class Quick extends SortAlgorithm {
-    public void sort(Comparable[] objs) {
-        if (objs == null || objs.length == 0) {
-            return;
-        }
-        quickSort(objs, 0, objs.length - 1);
-    }
-    
-    public void quickSort(Comparable[] objs, int start, int end) {
-        if (start >= end) {
+public class QuickSearch {
+    public void serch(Comparable[] objs, int start, int end, int k){
+                if (start >= end) {
             return;
         }
         
@@ -41,9 +35,22 @@ public class Quick extends SortAlgorithm {
                 j--;
             }
         }
-        quickSort(objs, start, i - 1);
-        quickSort(objs, i + 1, end);
+        // 确定轴值的最终位置 P
+        int P = i; // 轴值最后落点
+        //  判断第 k 小元素的位置关系
+        int pivotRank = P - start + 1; // 轴值在当前子数组中的“第几小”
+        if (k == pivotRank) {
+            System.out.println(objs[P]);// 输出第 k 小的元素
+            return;
+        } else if (k < pivotRank) {
+            // 左边：第 k 小
+            serch(objs, start, P - 1, k);
+        } else {
+            // 右边：要减掉左边 + pivot 的数量
+            serch(objs, P + 1, end, k - pivotRank);
+        }
     }
+
     
     /**
      * 找到start、end和中间位置三个数中的中间值的索引
@@ -70,17 +77,31 @@ public class Quick extends SortAlgorithm {
             }
         }
     }
-    public static void main(String[] args){
-        Comparable[] objs = GenerateData. getRandomData(20);
-        Quick quick= new Quick();
-        quick.show(objs);
-        quick.sort(objs);
-        quick.show(objs);
-        quick.isSorted(objs);
-        if(quick.isSorted(objs))
-            System.out.println("Quick sort is sorted");
-        else
-            System.out.println("Quick sort is not sorted");
+    public void exchange(Comparable[] objs, int i, int j) {
+        Comparable temp = objs[i];
+        objs[i] = objs[j];
+        objs[j] = temp;
+    }
+    public boolean less(Comparable a, Comparable b) {
+        return a.compareTo(b) < 0;
+    }
+ public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("请输入数组大小：");
+        int N = scanner.nextInt();
+        
+        Comparable[] objs = new Comparable[N];
+        System.out.println("请输入数组元素（例如一组整数）：");
+        for (int i = 0; i < N; i++) {
+            objs[i] = scanner.nextInt(); // 假设输入的是整数
+        }
+
+        System.out.print("请输入要查找的第 k 小元素 (1 ≤ k ≤ N)：");
+        int k = scanner.nextInt();
+
+        System.out.println("第 " + k + " 小的元素是: ");
+        QuickSearch qs = new QuickSearch();
+        qs.serch(objs, 0, N - 1, k);
     }
 }
-
