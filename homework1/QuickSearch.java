@@ -2,7 +2,7 @@ package homework1;
 import java.util.Scanner;
 
 public class QuickSearch {
-    public void serch(Comparable[] objs, int start, int end, int k){
+    public void search(Comparable[] objs, int start, int end, int k){
                 if (start >= end) {
             return;
         }
@@ -44,10 +44,10 @@ public class QuickSearch {
             return;
         } else if (k < pivotRank) {
             // 左边：第 k 小
-            serch(objs, start, P - 1, k);
+            search(objs, start, P - 1, k);
         } else {
             // 右边：要减掉左边 + pivot 的数量
-            serch(objs, P + 1, end, k - pivotRank);
+            search(objs, P + 1, end, k - pivotRank);
         }
     }
 
@@ -102,6 +102,6 @@ public class QuickSearch {
 
         System.out.println("第 " + k + " 小的元素是: ");
         QuickSearch qs = new QuickSearch();
-        qs.serch(objs, 0, N - 1, k);
+        qs.search(objs, 0, N - 1, k);
     }
 }
